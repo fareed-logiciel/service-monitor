@@ -10,7 +10,7 @@ const sampleHistory = Array.from({ length: 24 }, (_, i) => ({
 
 function ServiceHistory() {
   return (
-    <div>
+    <div id="service-history-page">
       <h1 className="text-3xl font-bold mb-8">Service History</h1>
       <ServiceHistoryChart history={sampleHistory} />
     </div>

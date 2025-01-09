@@ -18,7 +18,7 @@ const ServiceCard = ({ service, onAction }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-md p-4" id="service-card">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
           {statusIcons[service.status]}
@@ -36,8 +36,8 @@ const ServiceCard = ({ service, onAction }) => {
       <p className="text-sm text-gray-600 mb-2">{service.description}</p>
 
       <div className="text-xs text-gray-500 mb-3">
-        <div>Environment: {service.environment}</div>
-        <div>Platform: {service.platform}</div>
+        <div id="environment">Environment: {service.environment}</div>
+        <div id="platform">Platform: {service.platform}</div>
         <div>
           Last updated: {formatDistanceToNow(new Date(service.lastUpdated))} ago
         </div>
@@ -45,6 +45,7 @@ const ServiceCard = ({ service, onAction }) => {
 
       <div className="flex space-x-2">
         <button
+          id="start"
           onClick={() => onAction("start", service.id)}
           className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
           disabled={service.status === "running"}
@@ -52,6 +53,7 @@ const ServiceCard = ({ service, onAction }) => {
           Start
         </button>
         <button
+          id="stop"
           onClick={() => onAction("stop", service.id)}
           className="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600"
           disabled={service.status === "stopped"}
@@ -61,6 +63,7 @@ const ServiceCard = ({ service, onAction }) => {
         <button
           onClick={() => onAction("restart", service.id)}
           className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
+          id="restart"
         >
           <RefreshCw size={12} className="mr-1" /> Restart
         </button>

@@ -10,7 +10,7 @@ function Layout() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100 flex" id="layout">
       {/* Sidebar */}
       <nav className="w-64 bg-white shadow-md">
         <div className="p-4">

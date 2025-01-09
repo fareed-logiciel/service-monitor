@@ -67,7 +67,7 @@ function Dashboard() {
   });
 
   return (
-    <div>
+    <div id="dashboard-page">
       <h1 className="text-3xl font-bold mb-8">Service Dashboard</h1>
 
       <div className="mb-6 flex flex-col sm:flex-row gap-4">

@@ -16,7 +16,7 @@ const NotificationPanel = ({ notifications, onMarkAsRead }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-md p-4" id="notifications">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold flex items-center">
           <Bell className="mr-2" size={20} />

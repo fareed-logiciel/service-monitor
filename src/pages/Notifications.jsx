@@ -36,7 +36,7 @@ function Notifications() {
   };
 
   return (
-    <div>
+    <div id="notifications-page">
       <h1 className="text-3xl font-bold mb-8">Notifications</h1>
       <NotificationPanel
         notifications={notifications}

@@ -65,10 +65,14 @@ function ServiceHistoryChart({ history }) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
+        <div
+          id="CustomTooltip"
+          className="bg-white p-3 border rounded-lg shadow-lg"
+        >
           <p className="text-sm font-semibold mb-1">{data.timestamp}</p>
           <p className="text-sm flex items-center gap-2">
             <span
+              id="status"
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: data.color }}
             />
@@ -82,7 +86,10 @@ function ServiceHistoryChart({ history }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div
+      className="bg-white rounded-lg shadow-md p-4"
+      id="service-history-chart"
+    >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
         <h2 className="text-lg font-semibold flex items-center mb-4 sm:mb-0">
           <Clock className="mr-2" size={20} />
@@ -110,8 +117,12 @@ function ServiceHistoryChart({ history }) {
               value={selectedView}
               onChange={(e) => setSelectedView(e.target.value)}
             >
-              <option value="line">Line Chart</option>
-              <option value="bar">Bar Chart</option>
+              <option id="line" value="line">
+                Line Chart
+              </option>
+              <option id="bar" value="bar">
+                Bar Chart
+              </option>
             </select>
           </div>
         </div>
