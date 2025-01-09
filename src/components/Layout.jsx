@@ -1,13 +1,21 @@
-import React from "react";
-import { Outlet, NavLink } from "react-router-dom";
-import { LayoutDashboard, History, Bell } from "lucide-react";
+import React, { useState } from "react";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { LayoutDashboard, History, Bell, User } from "lucide-react";
 
 function Layout() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
   const navItems = [
     { to: "/", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/history", icon: History, label: "History" },
     { to: "/notifications", icon: Bell, label: "Notifications" },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); // Clear the auth token
+    navigate("/login"); // Redirect to login
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex" id="layout">
@@ -37,9 +45,45 @@ function Layout() {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 p-8">
-        <Outlet />
-      </main>
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <header className="bg-white shadow px-8 py-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-800"></h2>
+
+          {/* Profile Badge */}
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+              className="flex items-center space-x-3 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition"
+            >
+              <img
+                src="https://via.placeholder.com/40"
+                alt="User Avatar"
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="text-gray-700 font-medium">John Doe</span>
+              <User size={20} className="text-gray-500" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
+                <button
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Outlet for Nested Routes */}
+        <main className="flex-1 p-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
