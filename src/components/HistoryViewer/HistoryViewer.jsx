@@ -1,5 +1,18 @@
+// HistoryViewer.jsx
 import React, { useEffect, useState } from "react";
 import { fetchServiceHistory } from "../../api/serviceApi";
+import {
+  Box,
+  Typography,
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableHead,
+  Paper,
+} from "@mui/material";
 import {
   LineChart,
   Line,
@@ -8,18 +21,16 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import "./HistoryViewer.css";
 
 function HistoryViewer() {
   const [historyData, setHistoryData] = useState([]);
-  const [selectedServiceId, setSelectedServiceId] = useState("1"); // default
+  const [selectedServiceId, setSelectedServiceId] = useState("1");
 
   useEffect(() => {
     let mounted = true;
     async function loadHistory() {
       const data = await fetchServiceHistory(selectedServiceId);
       if (mounted) {
-        // Convert or transform data for chart usage if needed
         setHistoryData(data);
       }
     }
@@ -29,8 +40,7 @@ function HistoryViewer() {
     };
   }, [selectedServiceId]);
 
-  // Example transform: create a numeric indicator for states
-  // Running = 3, Stopped = 1, Pending = 2, Disabled = 0
+  // Transform for chart usage
   const chartData = historyData.map((record) => {
     let newStateVal;
     switch (record.newState) {
@@ -47,7 +57,7 @@ function HistoryViewer() {
         newStateVal = 0;
         break;
       default:
-        newStateVal = 1; // fallback
+        newStateVal = 1;
     }
     return {
       time: new Date(record.timestamp).toLocaleTimeString(),
@@ -58,19 +68,22 @@ function HistoryViewer() {
   });
 
   return (
-    <div className="history-viewer">
-      <h2>Service History Viewer</h2>
-      <div className="service-selector">
-        <label>Service ID:</label>
-        <input
-          type="text"
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h5" gutterBottom>
+        Service History Viewer
+      </Typography>
+
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="body1">Service ID:</Typography>
+        <TextField
+          size="small"
           value={selectedServiceId}
           onChange={(e) => setSelectedServiceId(e.target.value)}
+          sx={{ ml: 1 }}
         />
-        {/* In a real app, you might have a dropdown populated by service IDs or names */}
-      </div>
+      </Box>
 
-      <div className="chart-container">
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
         <LineChart
           width={600}
           height={300}
@@ -100,27 +113,37 @@ function HistoryViewer() {
           />
           <Tooltip />
         </LineChart>
-      </div>
+      </Box>
 
-      <table className="history-table">
-        <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>Old State</th>
-            <th>New State</th>
-          </tr>
-        </thead>
-        <tbody>
-          {historyData.map((record, idx) => (
-            <tr key={idx}>
-              <td>{new Date(record.timestamp).toLocaleString()}</td>
-              <td>{record.oldState}</td>
-              <td>{record.newState}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <strong>Timestamp</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Old State</strong>
+              </TableCell>
+              <TableCell>
+                <strong>New State</strong>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {historyData.map((record, idx) => (
+              <TableRow key={idx}>
+                <TableCell>
+                  {new Date(record.timestamp).toLocaleString()}
+                </TableCell>
+                <TableCell>{record.oldState}</TableCell>
+                <TableCell>{record.newState}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
 
