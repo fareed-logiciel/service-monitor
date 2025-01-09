@@ -78,6 +78,7 @@ function Dashboard() {
           />
           <input
             type="text"
+            id="search-services"
             placeholder="Search services..."
             className="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
@@ -90,14 +91,23 @@ function Dashboard() {
             size={20}
           />
           <select
+            id="select-env"
             className="pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={selectedEnvironment}
             onChange={(e) => setSelectedEnvironment(e.target.value)}
           >
-            <option value="all">All Environments</option>
-            <option value="development">Development</option>
-            <option value="qa">QA</option>
-            <option value="production">Production</option>
+            <option id="all-env" value="all">
+              All Environments
+            </option>
+            <option id="dev" value="development">
+              Development
+            </option>
+            <option id="qa" value="qa">
+              QA
+            </option>
+            <option id="prod" value="production">
+              Production
+            </option>
           </select>
         </div>
       </div>

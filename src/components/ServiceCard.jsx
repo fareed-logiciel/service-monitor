@@ -22,9 +22,12 @@ const ServiceCard = ({ service, onAction }) => {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
           {statusIcons[service.status]}
-          <h3 className="font-semibold">{service.name}</h3>
+          <h3 className="font-semibold" id={service.name}>
+            {service.name}
+          </h3>
         </div>
         <span
+          id={service.status}
           className={`px-2 py-1 rounded-full text-xs ${
             statusColors[service.status]
           }`}

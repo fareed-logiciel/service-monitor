@@ -99,12 +99,13 @@ function ServiceHistoryChart({ history }) {
           <div className="flex items-center space-x-2">
             <Calendar size={16} className="text-gray-500" />
             <select
+              id="range"
               className="pl-2 pr-8 py-1 rounded border focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedRange}
               onChange={(e) => setSelectedRange(Number(e.target.value))}
             >
               {timeRanges.map((range) => (
-                <option key={range.value} value={range.value}>
+                <option id={range.label} key={range.value} value={range.value}>
                   {range.label}
                 </option>
               ))}
@@ -113,6 +114,7 @@ function ServiceHistoryChart({ history }) {
           <div className="flex items-center space-x-2">
             <Filter size={16} className="text-gray-500" />
             <select
+              id="chart-type"
               className="pl-2 pr-8 py-1 rounded border focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedView}
               onChange={(e) => setSelectedView(e.target.value)}
@@ -223,7 +225,7 @@ function ServiceHistoryChart({ history }) {
 
       <div className="mt-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-md font-semibold">Recent Events</h3>
+          <h3 className="text-md font-semibold">Historical Events</h3>
           <div className="flex gap-4">
             {Object.entries(statusColors).map(([status, color]) => (
               <div

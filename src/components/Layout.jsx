@@ -27,6 +27,7 @@ function Layout() {
         <div className="space-y-2 p-4">
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink
+              id={label}
               key={to}
               to={to}
               className={({ isActive }) =>
@@ -48,11 +49,11 @@ function Layout() {
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-white shadow px-8 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-800"></h2>
-
+          <div></div>
           {/* Profile Badge */}
           <div className="relative">
             <button
+              id="profile"
               onClick={() => setIsDropdownOpen((prev) => !prev)}
               className="flex items-center space-x-3 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition"
             >
@@ -69,6 +70,7 @@ function Layout() {
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
                 <button
+                  id="Logout"
                   className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
                   onClick={handleLogout}
                 >
