@@ -1,6 +1,18 @@
+// NotificationDashboard.jsx
 import React, { useEffect, useState } from "react";
 import { fetchNotifications } from "../../api/serviceApi";
-import "./NotificationDashboard.css";
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  List,
+  ListItem,
+  Alert,
+  AlertTitle,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 
 function NotificationDashboard() {
   const [notifications, setNotifications] = useState([]);
@@ -25,38 +37,60 @@ function NotificationDashboard() {
     return notif.severity.toLowerCase() === filterSeverity.toLowerCase();
   });
 
-  return (
-    <div className="notification-dashboard">
-      <h2>Notification Dashboard</h2>
-      <div className="filter-bar">
-        <label>Filter by Severity: </label>
-        <select
-          value={filterSeverity}
-          onChange={(e) => setFilterSeverity(e.target.value)}
-        >
-          <option value="">All</option>
-          <option value="Critical">Critical</option>
-          <option value="Warning">Warning</option>
-          <option value="Informational">Informational</option>
-        </select>
-      </div>
+  const getAlertColor = (severity) => {
+    switch (severity.toLowerCase()) {
+      case "critical":
+        return "error";
+      case "warning":
+        return "warning";
+      case "informational":
+        return "info";
+      default:
+        return "info";
+    }
+  };
 
-      <ul className="notification-list">
-        {filteredNotifications.map((notif) => (
-          <li
-            key={notif.id}
-            className={`notif-item ${notif.severity.toLowerCase()}`}
+  return (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h5" gutterBottom>
+        Notification Dashboard
+      </Typography>
+
+      <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 2 }}>
+        <FormControl size="small">
+          <InputLabel id="severity-label">Severity</InputLabel>
+          <Select
+            labelId="severity-label"
+            label="Severity"
+            value={filterSeverity}
+            onChange={(e) => setFilterSeverity(e.target.value)}
+            sx={{ width: 150 }}
           >
-            <div className="notif-severity">{notif.severity}</div>
-            <div className="notif-message">{notif.message}</div>
-            <div className="notif-service">Service: {notif.serviceName}</div>
-            <div className="notif-timestamp">
-              {new Date(notif.timestamp).toLocaleString()}
-            </div>
-          </li>
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Critical">Critical</MenuItem>
+            <MenuItem value="Warning">Warning</MenuItem>
+            <MenuItem value="Informational">Informational</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
+      <List>
+        {filteredNotifications.map((notif) => (
+          <ListItem key={notif.id}>
+            <Alert
+              severity={getAlertColor(notif.severity)}
+              variant="outlined"
+              sx={{ width: "100%" }}
+            >
+              <AlertTitle>{notif.severity}</AlertTitle>
+              <strong>Service: {notif.serviceName}</strong> — {notif.message}
+              <br />
+              <em>{new Date(notif.timestamp).toLocaleString()}</em>
+            </Alert>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 }
 

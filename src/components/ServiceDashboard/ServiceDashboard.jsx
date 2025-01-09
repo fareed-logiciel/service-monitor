@@ -1,6 +1,20 @@
+// ServiceDashboard.jsx
 import React, { useEffect, useState } from "react";
 import { fetchServices, performServiceAction } from "../../api/serviceApi";
-import "./ServiceDashboard.css";
+import {
+  Box,
+  Typography,
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Stack,
+} from "@mui/material";
 
 function ServiceDashboard() {
   const [services, setServices] = useState([]);
@@ -28,14 +42,14 @@ function ServiceDashboard() {
 
   const handleAction = async (serviceId, action) => {
     const response = await performServiceAction(serviceId, action);
-    alert(response.message); // Simple alert; replace with a better notification
+    alert(response.message); // Or replace with MUI Snackbar/Alert
 
     // Refresh the services after the action
     const updatedData = await fetchServices();
     setServices(updatedData);
   };
 
-  // Basic filtering by service name or environment
+  // Basic filtering
   const filteredServices = services.filter((svc) => {
     const text = filterText.toLowerCase();
     return (
@@ -46,57 +60,96 @@ function ServiceDashboard() {
   });
 
   return (
-    <div className="service-dashboard">
-      <h2>Service State Dashboard</h2>
-      <div className="filter-bar">
-        <input
-          type="text"
-          placeholder="Filter by service name, environment, or status"
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h5" gutterBottom>
+        Service State Dashboard
+      </Typography>
+
+      <Box sx={{ mb: 2 }}>
+        <TextField
+          label="Filter by service/environment/status"
+          variant="outlined"
+          size="small"
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
         />
-      </div>
+      </Box>
 
       {loading ? (
-        <p>Loading services...</p>
+        <Typography>Loading services...</Typography>
       ) : (
-        <table className="service-table">
-          <thead>
-            <tr>
-              <th>Service Name</th>
-              <th>Status</th>
-              <th>Environment</th>
-              <th>Last Update</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredServices.map((svc) => (
-              <tr key={svc.id}>
-                <td>{svc.name}</td>
-                <td>{svc.status}</td>
-                <td>{svc.environment}</td>
-                <td>{new Date(svc.lastUpdate).toLocaleString()}</td>
-                <td>
-                  <button onClick={() => handleAction(svc.id, "start")}>
-                    Start
-                  </button>
-                  <button onClick={() => handleAction(svc.id, "stop")}>
-                    Stop
-                  </button>
-                  <button onClick={() => handleAction(svc.id, "restart")}>
-                    Restart
-                  </button>
-                  <button onClick={() => handleAction(svc.id, "disable")}>
-                    Disable
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <TableContainer component={Paper}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <strong>Service Name</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Status</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Environment</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Last Update</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Actions</strong>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredServices.map((svc) => (
+                <TableRow key={svc.id}>
+                  <TableCell>{svc.name}</TableCell>
+                  <TableCell>{svc.status}</TableCell>
+                  <TableCell>{svc.environment}</TableCell>
+                  <TableCell>
+                    {new Date(svc.lastUpdate).toLocaleString()}
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={1}>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => handleAction(svc.id, "start")}
+                      >
+                        Start
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="warning"
+                        size="small"
+                        onClick={() => handleAction(svc.id, "stop")}
+                      >
+                        Stop
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={() => handleAction(svc.id, "restart")}
+                      >
+                        Restart
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={() => handleAction(svc.id, "disable")}
+                      >
+                        Disable
+                      </Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
-    </div>
+    </Box>
   );
 }
 
