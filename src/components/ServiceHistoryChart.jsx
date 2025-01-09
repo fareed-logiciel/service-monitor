@@ -66,19 +66,23 @@ function ServiceHistoryChart({ history }) {
       const data = payload[0].payload;
       return (
         <div
-          id="CustomTooltip"
+          id="custom-tooltip"
           className="bg-white p-3 border rounded-lg shadow-lg"
         >
-          <p className="text-sm font-semibold mb-1">{data.timestamp}</p>
+          <p id="tooltip-timestamp" className="text-sm font-semibold mb-1">
+            {data.timestamp}
+          </p>
           <p className="text-sm flex items-center gap-2">
             <span
-              id="status"
+              id="tooltip-status"
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: data.color }}
             />
             Status: {data.status}
           </p>
-          <p className="text-sm text-gray-600 mt-1">{data.description}</p>
+          <p id="tooltip-description" className="text-sm text-gray-600 mt-1">
+            {data.description}
+          </p>
         </div>
       );
     }
@@ -91,7 +95,10 @@ function ServiceHistoryChart({ history }) {
       id="service-history-chart"
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold flex items-center mb-4 sm:mb-0">
+        <h2
+          id="history-chart-title"
+          className="text-lg font-semibold flex items-center mb-4 sm:mb-0"
+        >
           <Clock className="mr-2" size={20} />
           Service Status History
         </h2>
@@ -99,13 +106,17 @@ function ServiceHistoryChart({ history }) {
           <div className="flex items-center space-x-2">
             <Calendar size={16} className="text-gray-500" />
             <select
-              id="range"
+              id="time-range-selector"
               className="pl-2 pr-8 py-1 rounded border focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedRange}
               onChange={(e) => setSelectedRange(Number(e.target.value))}
             >
               {timeRanges.map((range) => (
-                <option id={range.label} key={range.value} value={range.value}>
+                <option
+                  id={`time-range-${range.label}`}
+                  key={range.value}
+                  value={range.value}
+                >
                   {range.label}
                 </option>
               ))}
@@ -114,15 +125,15 @@ function ServiceHistoryChart({ history }) {
           <div className="flex items-center space-x-2">
             <Filter size={16} className="text-gray-500" />
             <select
-              id="chart-type"
+              id="chart-type-selector"
               className="pl-2 pr-8 py-1 rounded border focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedView}
               onChange={(e) => setSelectedView(e.target.value)}
             >
-              <option id="line" value="line">
+              <option id="chart-type-line" value="line">
                 Line Chart
               </option>
-              <option id="bar" value="bar">
+              <option id="chart-type-bar" value="bar">
                 Bar Chart
               </option>
             </select>
@@ -131,32 +142,39 @@ function ServiceHistoryChart({ history }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-        <div className="bg-blue-50 p-4 rounded-lg">
+        <div id="uptime-card" className="bg-blue-50 p-4 rounded-lg">
           <div className="text-sm text-gray-600">Uptime</div>
-          <div className="text-2xl font-bold text-blue-600">
+          <div
+            id="uptime-percentage"
+            className="text-2xl font-bold text-blue-600"
+          >
             {uptimePercentage}%
           </div>
           <div className="text-xs text-gray-500 mt-1">
             Last {selectedRange} day(s)
           </div>
         </div>
-        <div className="bg-red-50 p-4 rounded-lg">
+        <div id="downtime-card" className="bg-red-50 p-4 rounded-lg">
           <div className="text-sm text-gray-600">Downtime</div>
-          <div className="text-2xl font-bold text-red-600">
+          <div id="downtime-hours" className="text-2xl font-bold text-red-600">
             {downtimeHours.toFixed(1)}h
           </div>
           <div className="text-xs text-gray-500 mt-1">Total hours down</div>
         </div>
-        <div className="bg-yellow-50 p-4 rounded-lg">
+        <div id="critical-events-card" className="bg-yellow-50 p-4 rounded-lg">
           <div className="text-sm text-gray-600">Critical Events</div>
-          <div className="text-2xl font-bold text-yellow-600">
+          <div
+            id="critical-events-count"
+            className="text-2xl font-bold text-yellow-600"
+          >
             {criticalEvents}
           </div>
           <div className="text-xs text-gray-500 mt-1">Service stops</div>
         </div>
-        <div className="bg-purple-50 p-4 rounded-lg">
+        <div id="current-status-card" className="bg-purple-50 p-4 rounded-lg">
           <div className="text-sm text-gray-600">Current Status</div>
           <div
+            id="current-status"
             className="text-2xl font-bold"
             style={{
               color: statusColors[data[data.length - 1]?.status || "disabled"],
@@ -168,7 +186,7 @@ function ServiceHistoryChart({ history }) {
         </div>
       </div>
 
-      <div className="h-64 mb-6">
+      <div id="chart-container" className="h-64 mb-6">
         <ResponsiveContainer width="100%" height="100%">
           {selectedView === "line" ? (
             <LineChart data={data}>
@@ -182,7 +200,7 @@ function ServiceHistoryChart({ history }) {
                 ticks={[0, 1, 2, 3]}
                 tickFormatter={(value) =>
                   Object.entries(statusToNumber).find(
-                    ([, v]) => v === value
+                    ([_, v]) => v === value
                   )?.[0] || ""
                 }
                 tick={{ fontSize: 12 }}
@@ -210,7 +228,7 @@ function ServiceHistoryChart({ history }) {
                 ticks={[0, 1, 2, 3]}
                 tickFormatter={(value) =>
                   Object.entries(statusToNumber).find(
-                    ([, v]) => v === value
+                    ([_, v]) => v === value
                   )?.[0] || ""
                 }
                 tick={{ fontSize: 12 }}
@@ -222,14 +240,19 @@ function ServiceHistoryChart({ history }) {
           )}
         </ResponsiveContainer>
       </div>
-
-      <div className="mt-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-md font-semibold">Historical Events</h3>
-          <div className="flex gap-4">
+      <div className="mt-6" id="historical-events-section">
+        <div
+          className="flex items-center justify-between mb-3"
+          id="historical-events-header"
+        >
+          <h3 className="text-md font-semibold" id="historical-events-title">
+            Historical Events
+          </h3>
+          <div className="flex gap-4" id="status-legend">
             {Object.entries(statusColors).map(([status, color]) => (
               <div
                 key={status}
+                id={`legend-${status}`}
                 className="flex items-center gap-1 text-xs text-gray-600"
               >
                 <span
@@ -241,25 +264,39 @@ function ServiceHistoryChart({ history }) {
             ))}
           </div>
         </div>
-        <div className="space-y-2 max-h-48 overflow-y-auto">
+        <div
+          className="space-y-2 max-h-48 overflow-y-auto"
+          id="historical-events-list"
+        >
           {data
             .slice()
             .reverse()
             .map((event, index) => (
               <div
                 key={index}
+                id={`historical-event-${index}`}
                 className="flex items-center justify-between text-sm p-2 hover:bg-gray-50 rounded border border-gray-100"
               >
                 <div className="flex items-center space-x-2">
                   <span
+                    id={`event-status-color-${index}`}
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: event.color }}
                   />
-                  <span className="font-medium">{event.status}</span>
+                  <span id={`event-status-${index}`} className="font-medium">
+                    {event.status}
+                  </span>
                   <span className="text-gray-600">-</span>
-                  <span className="text-gray-600">{event.description}</span>
+                  <span
+                    id={`event-description-${index}`}
+                    className="text-gray-600"
+                  >
+                    {event.description}
+                  </span>
                 </div>
-                <div className="text-gray-500">{event.timestamp}</div>
+                <div id={`event-timestamp-${index}`} className="text-gray-500">
+                  {event.timestamp}
+                </div>
               </div>
             ))}
         </div>

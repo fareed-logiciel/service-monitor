@@ -18,16 +18,23 @@ const ServiceCard = ({ service, onAction }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4" id="service-card">
-      <div className="flex items-center justify-between mb-2">
+    <div
+      className="bg-white rounded-lg shadow-md p-4"
+      id={`service-card-${service.id}`}
+    >
+      {/* Service Header */}
+      <div
+        className="flex items-center justify-between mb-2"
+        id={`service-header-${service.id}`}
+      >
         <div className="flex items-center space-x-2">
           {statusIcons[service.status]}
-          <h3 className="font-semibold" id={service.name}>
+          <h3 className="font-semibold" id={`service-name-${service.id}`}>
             {service.name}
           </h3>
         </div>
         <span
-          id={service.status}
+          id={`service-status-${service.id}`}
           className={`px-2 py-1 rounded-full text-xs ${
             statusColors[service.status]
           }`}
@@ -36,19 +43,34 @@ const ServiceCard = ({ service, onAction }) => {
         </span>
       </div>
 
-      <p className="text-sm text-gray-600 mb-2">{service.description}</p>
+      {/* Service Description */}
+      <p
+        className="text-sm text-gray-600 mb-2"
+        id={`service-description-${service.id}`}
+      >
+        {service.description}
+      </p>
 
-      <div className="text-xs text-gray-500 mb-3">
-        <div id="environment">Environment: {service.environment}</div>
-        <div id="platform">Platform: {service.platform}</div>
-        <div>
+      {/* Service Details */}
+      <div
+        className="text-xs text-gray-500 mb-3"
+        id={`service-details-${service.id}`}
+      >
+        <div id={`service-environment-${service.id}`}>
+          Environment: {service.environment}
+        </div>
+        <div id={`service-platform-${service.id}`}>
+          Platform: {service.platform}
+        </div>
+        <div id={`service-last-updated-${service.id}`}>
           Last updated: {formatDistanceToNow(new Date(service.lastUpdated))} ago
         </div>
       </div>
 
-      <div className="flex space-x-2">
+      {/* Action Buttons */}
+      <div className="flex space-x-2" id={`service-actions-${service.id}`}>
         <button
-          id="start"
+          id={`service-start-${service.id}`}
           onClick={() => onAction("start", service.id)}
           className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
           disabled={service.status === "running"}
@@ -56,7 +78,7 @@ const ServiceCard = ({ service, onAction }) => {
           Start
         </button>
         <button
-          id="stop"
+          id={`service-stop-${service.id}`}
           onClick={() => onAction("stop", service.id)}
           className="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600"
           disabled={service.status === "stopped"}
@@ -64,9 +86,9 @@ const ServiceCard = ({ service, onAction }) => {
           Stop
         </button>
         <button
+          id={`service-restart-${service.id}`}
           onClick={() => onAction("restart", service.id)}
           className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
-          id="restart"
         >
           <RefreshCw size={12} className="mr-1" /> Restart
         </button>

@@ -68,11 +68,17 @@ function Dashboard() {
 
   return (
     <div id="dashboard-page">
-      <h1 className="text-3xl font-bold mb-8">Service Dashboard</h1>
+      <h1 id="dashboard-title" className="text-3xl font-bold mb-8">
+        Service Dashboard
+      </h1>
 
-      <div className="mb-6 flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
+      <div
+        id="dashboard-controls"
+        className="mb-6 flex flex-col sm:flex-row gap-4"
+      >
+        <div className="relative flex-1" id="search-container">
           <Search
+            id="search-icon"
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
           />
@@ -85,8 +91,9 @@ function Dashboard() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="relative">
+        <div className="relative" id="filter-container">
           <Filter
+            id="filter-icon"
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
           />
@@ -112,10 +119,11 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div id="services-grid" className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredServices.map((service) => (
           <ServiceCard
             key={service.id}
+            id={`service-card-${service.id}`}
             service={service}
             onAction={handleServiceAction}
           />

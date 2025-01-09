@@ -16,21 +16,33 @@ const NotificationPanel = ({ notifications, onMarkAsRead }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4" id="notifications">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold flex items-center">
+    <div className="bg-white rounded-lg shadow-md p-4" id="notifications-panel">
+      {/* Header */}
+      <div
+        className="flex items-center justify-between mb-4"
+        id="notifications-header"
+      >
+        <h2
+          className="text-lg font-semibold flex items-center"
+          id="notifications-title"
+        >
           <Bell className="mr-2" size={20} />
           Notifications
         </h2>
-        <span className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs">
+        <span
+          id="notifications-new-count"
+          className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs"
+        >
           {notifications.filter((n) => !n.isRead).length} new
         </span>
       </div>
 
-      <div className="space-y-3">
+      {/* Notifications List */}
+      <div className="space-y-3" id="notifications-list">
         {notifications.map((notification) => (
           <div
             key={notification.id}
+            id={`notification-${notification.id}`} // Unique ID for each notification
             className={`p-3 rounded border ${
               severityColors[notification.severity]
             } ${!notification.isRead ? "border-l-4" : ""}`}
@@ -39,14 +51,23 @@ const NotificationPanel = ({ notifications, onMarkAsRead }) => {
               <div className="flex items-start space-x-2">
                 {severityIcons[notification.severity]}
                 <div>
-                  <p className="text-sm">{notification.message}</p>
-                  <span className="text-xs text-gray-500">
+                  <p
+                    className="text-sm"
+                    id={`notification-message-${notification.id}`}
+                  >
+                    {notification.message}
+                  </p>
+                  <span
+                    className="text-xs text-gray-500"
+                    id={`notification-timestamp-${notification.id}`}
+                  >
                     {formatDistanceToNow(new Date(notification.timestamp))} ago
                   </span>
                 </div>
               </div>
               {!notification.isRead && (
                 <button
+                  id={`mark-as-read-${notification.id}`} // Unique ID for mark-as-read button
                   onClick={() => onMarkAsRead(notification.id)}
                   className="text-xs text-gray-500 hover:text-gray-700"
                 >
