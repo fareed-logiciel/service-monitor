@@ -1,0 +1,41 @@
+/* HistoryViewer.css */
+.history-viewer {
+  padding: 1rem;
+}
+
+.service-selector {
+  margin-bottom: 1rem;
+}
+
+.service-selector label {
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.service-selector input {
+  padding: 0.3rem;
+  width: 100px;
+}
+
+.chart-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid #ccc;
+  padding: 0.6rem;
+}
+
+.history-table th {
+  background-color: #f2f2f2;
+}
